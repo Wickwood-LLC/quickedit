@@ -48,7 +48,7 @@ class QuickEditMetadataGenerator implements QuickEditMetadataGeneratorInterface 
    */
   public function generateEntityMetadata($entity_type, $entity, $langcode) {
     return array(
-      'label' => $entity->title,
+      'label' => check_plain($entity->title),
     );
   }
 

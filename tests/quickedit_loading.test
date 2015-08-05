@@ -50,6 +50,7 @@ class QuickEditLoadingTest extends DrupalWebTestCase {
     // Create one node of the above node type using the above text format.
     $this->drupalCreateNode(array(
       'type' => 'article',
+      'title' => '<script>alert("EVIL!")</script>',
       'body' => array(
         LANGUAGE_NONE => array(
           0 => array(
@@ -59,6 +60,7 @@ class QuickEditLoadingTest extends DrupalWebTestCase {
         ),
       ),
       'log' => $this->randomString(),
+      'promote' => 1,
     ));
 
     // Create 2 users, the only difference being the ability to use in-place
@@ -321,7 +323,19 @@ class QuickEditLoadingTest extends DrupalWebTestCase {
    */
   public function testTitleBaseField() {
     $this->drupalLogin($this->editor_user);
+
+    // First, ensure quickedit_preprocess_node()'s wrapping of the 'title'
+    // template variable does not result in an XSS. We cannot check this on the
+    // full node page, because there the 'node' template's 'title' variable is
+    // not printed: there, the actual
+    $this->drupalGet('');
+    $this->assertNoRaw('<script>alert("EVIL!")</script>');
+
+    // Next, try in-place editing the node on its full node page. Also ensure
+    // quickedit_preprocess_page()'s wrapping of the 'title' template variable
+    // does not result in an XSS.
     $this->drupalGet('node/1');
+    $this->assertNoRaw('<script>alert("EVIL!")</script>');
 
     // Ensure that the full page title is actually in-place editable
     $node = node_load(1);
@@ -330,10 +344,16 @@ class QuickEditLoadingTest extends DrupalWebTestCase {
 
     // Retrieving the metadata should result in a 200 JSON response.
     $htmlPageDrupalSettings = $this->drupalSettings;
-    $post = array('fields[0]' => 'node/1/title/und/full');
+    $post = array(
+      'entities[0]' => 'node/1',
+      'fields[0]' => 'node/1/title/und/full');
     $response = $this->drupalPostCustom('quickedit/metadata', 'application/json', $post);
     $this->assertResponse(200);
     $expected = array(
+      // The label should be check_plain()'d.
+      'node/1' => array(
+        'label' => '&lt;script&gt;alert(&quot;EVIL!&quot;)&lt;/script&gt;',
+      ),
       'node/1/title/und/full' => array(
         'label' => 'Title',
         'access' => TRUE,

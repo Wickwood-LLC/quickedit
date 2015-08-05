@@ -489,8 +489,8 @@ function quickedit_preprocess_node(&$variables) {
 
   // Pseudo-field: title.
   $node_type = node_type_get_type($bundle);
-  if ($node_type->has_title && !empty($entity->title)) {
-    $variables['title'] = quickedit_wrap_pseudofield($entity->title, "node/$id/title/$quickedit_id_suffix");
+  if ($node_type->has_title && !empty($variables['title'])) {
+    $variables['title'] = quickedit_wrap_pseudofield($variables['title'], "node/$id/title/$quickedit_id_suffix");
   }
 
   // Pseudo-fields: author (name) and created date (authoring date).
