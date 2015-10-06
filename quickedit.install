@@ -125,9 +125,9 @@ function quickedit_requirements($phase) {
         return $requirements;
       }
 
-      $dom = new \DOMDocument();
+      $dom = new DOMDocument();
       @$dom->loadHTML($response->data);
-      $xpath = new \DOMXPath($dom);
+      $xpath = new DOMXPath($dom);
 
       $errors = array();
 
