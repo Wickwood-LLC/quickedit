@@ -57,6 +57,8 @@ function quickedit_filter_info_alter(&$info) {
     'ckeditor_link_filter' => FILTER_TYPE_TRANSFORM_REVERSIBLE,
     // https://drupal.org/project/emptyparagraphkiller
     'emptyparagraphkiller' => FILTER_TYPE_HTML_RESTRICTOR,
+    // https://drupal.org/project/entity_embed
+    'entity_embed' => FILTER_TYPE_TRANSFORM_REVERSIBLE,
     // https://drupal.org/project/footnotes
     'filter_footnotes' => FILTER_TYPE_TRANSFORM_IRREVERSIBLE,
     // https://drupal.org/project/commons_hashtags
@@ -68,6 +70,8 @@ function quickedit_filter_info_alter(&$info) {
     'htmlpurifier_advanced' => FILTER_TYPE_HTML_RESTRICTOR,
     // http://drupal.org/project/image_resize_filter
     'image_resize_filter' => FILTER_TYPE_TRANSFORM_REVERSIBLE,
+    // http://drupal.org/project/entity_embed
+    'filter_align' => FILTER_TYPE_TRANSFORM_REVERSIBLE,
     // http://drupal.org/project/markdown
     'filter_markdown' => FILTER_TYPE_MARKUP_LANGUAGE,
     // https://drupal.org/project/insert_view
