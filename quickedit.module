@@ -430,7 +430,7 @@ function quickedit_preprocess_field(&$variables) {
 
   // Some fields might be rendered through theme_field()
   // but are not Field API fields, e.g. Display Suite fields.
-  if (!empty($element['#skip_edit'])) {
+  if (!empty($element['#skip_quickedit'])) {
     return;
   }
 
