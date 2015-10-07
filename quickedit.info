@@ -3,11 +3,13 @@ description = In-place content editing.
 package = Spark
 core = 7.x
 
-files[] = tests/quickedit_loading.test
-
 dependencies[] = contextual
 dependencies[] = entity
 dependencies[] = field (>=7.22)
 dependencies[] = filter
 dependencies[] = libraries (>=2.x)
 dependencies[] = ctools
+
+test_dependencies[] = ckeditor
+
+files[] = quickedit.test
