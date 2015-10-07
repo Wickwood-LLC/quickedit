@@ -21,6 +21,21 @@ module_load_include('inc', 'quickedit', 'includes/node');
 module_load_include('inc', 'quickedit', 'includes/panelizer');
 
 /**
+ * Implements hook_hook_info().
+ */
+function quickedit_hook_info() {
+  $hooks = array(
+    'quickedit_editor_info',
+    'quickedit_editor_info_alter',
+    'quickedit_editor_metadata_alter',
+    'quickedit_editor_attachments_alter',
+    'quickedit_render_field',
+  );
+
+  return array_fill_keys($hooks, array('group' => 'quickedit'));
+}
+
+/**
  * Implements hook_menu().
  */
 function quickedit_menu() {
@@ -609,33 +624,6 @@ function quickedit_editor_list($reset = FALSE) {
 function quickedit_editor_get($editor) {
   $list = quickedit_editor_list();
   return !empty($list[$editor]) ? $list[$editor] : FALSE;
-}
-
-/**
- * Implements hook_quickedit_editor_info().
- *
- * @see Drupal 8's \Drupal\quickedit\Plugin\InPlaceEditorManager.
- * @see Drupal 8's \Drupal\quickedit\Plugin\InPlaceEditorInterface.
- */
-function quickedit_quickedit_editor_info() {
-  $editors = array();
-  $path = drupal_get_path('module', 'quickedit') . '/InPlaceEditors';
-  $editors['form'] = array(
-    'file' => $path . '/formEditor.php',
-    'class' => 'FormEditor',
-  );
-  $editors['plain_text'] = array(
-    'file' => $path . '/plainTextEditor.php',
-    'class' => 'PlainTextEditor',
-  );
-  if (module_exists('ckeditor')) {
-    $editors['ckeditor'] = array(
-      'alternativeTo' => array('plain_text'),
-      'file' => $path . '/CKEditor.php',
-      'class' => 'CKEditor',
-    );
-  }
-  return $editors;
 }
 
 /**
