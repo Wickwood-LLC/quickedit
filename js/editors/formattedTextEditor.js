@@ -189,7 +189,7 @@
       // toolbar at all. (CKEditor doesn't need a floated toolbar.)
       if (mainToolbarId) {
         var settingsOverride = {
-          removePlugins: 'floatingspace,elementspath',
+          removePlugins: 'floatingspace,elementspath,counter',
           sharedSpaces: {
             top: mainToolbarId
           }
