@@ -1,53 +1,55 @@
-Description
------------
-This module makes it possible to edit fields in-place.
+CONTENTS OF THIS FILE
+---------------------
+
+ * Introduction
+ * Requirements
+ * Installation
+ * FAQ
+ * Backporting Considerations
+
+INTRODUCTION
+------------
+
+Current Maintainers:
+
+ * Wim Leers <http://drupal.org/user/99777>
+ * Devin Carlson <http://drupal.org/user/290182>
+
+Quick Edit allows content to be edited in-place.
+
+REQUIREMENTS
+------------
+
+Quick Edit requires Drupal 7.22 or later. It has six dependencies and requires
+two libraries.
+
+Drupal core modules
+ * Contextual
+ * Field
+ * Filter
+
+Contributed modules
+ * Chaos Tools
+ * Entity API
+ * Libraries - 2.x
+
+Libraries
+ * Underscore.js - 1.5 or later (production version)
+ * Backbone.js - 1.0 or later (production version)
 
 Like Drupal 8's implementation of in-place editing, IE>=9 is supported.
 
-
-Installation
+INSTALLATION
 ------------
-1. Install like any other Drupal module.
-2. Download Underscore 1.5.x and Backbone 1.x from http://underscorejs.org/ and
-   http://backbonejs.org/, respectively and put them in sites/all/libraries, in
-   a "underscore" and a "backbone" subdirectory, respectively. Either the
-   development or production version will work. Edit module will automatically
-   use the production (minified) version if it's available, because it's more
-   efficient.
-3. Grant the 'Access in-place editing' permission to relevant roles.
-4. Contextual links on nodes will now have a 'Quick edit' link. Clicking it will
-   start in-place editing of that node!
 
-If you're using Panels, then you'll want to apply a patch that fixes a bug in
-Panels which prevents Quick Edit from working: https://drupal.org/node/2169571.
-
-
-In-place WYSIWYG editing using CKEditor
----------------------------------------
-1. Download and install the latest stable release (version 1.13 or newer) of the
-   CKEditor module from http://drupal.org/project/ckeditor.
-   Note that *only* the CKEditor module is supported, not any other module, like
-   the "Wysiwyg" module (http://drupal.org/project/wysiwyg).
-2. Download this Quick Edit-optimized build of CKEditor:
-   http://download.cksource.com/CKEditor%20for%20Drupal/edit/ckeditor_4.3.2_edit.zip
-   Alternatively, go to http://ckeditor.com/builder, choose any preset you like,
-   then add the "Shared Space" plugin to the list of "Selected plugins". Then
-   click the "Download" button.
-   Only version 4.2 or newer of CKEditor is supported.
-   NOTE: If you use the "Source" button, also add the "Source Dialog" plugin to
-   the list of "Selected plugins".
-3. Extract the downloaded package to sites/all/libraries/ckeditor. For maximum
-   security, it is recommended to delete the included "samples" directory at
-   sites/all/libraries/ckeditor/samples.
-4. Go to admin/config/content/ckeditor/, enable one of the CKEditor profiles for
-   each text format where you want to use CKEditor. Or create a new CKEditor
-   profile.
-   e.g. Enable the default "Advanced" profile for Drupal's "Filtered HTML" text
-   format.
-5. Find a node that uses e.g. the "Filtered HTML" text format for its body,
-   click the "Quick edit" link, then click the node's body, and you should see
-   CKEditor's in-place editing!
-
+* Download the Backbone.js and Underscore.js libraries, extract them and then
+  place them in your site's libraries directory. Take care to ensure that the
+  resulting folder names are 'backbone' and 'underscore' respectively.
+* Install Quick Edit via the standard Drupal installation process:
+  'http://drupal.org/node/895232'.
+* Grant the 'Access in-place editing' permission to your desired roles.
+* Contextual links on nodes will now have a 'Quick edit' link. Clicking it will
+  start in-place editing of that node.
 
 FAQ
 ---
@@ -124,10 +126,11 @@ A: Absolutely! You can do something like this;
    Try it by copy/pasting and executing that code at /node/1 in your browser's
    console and you'll see that in-place editing starts immediately!
 
+BACKPORTING CONSIDERATIONS
+--------------------------
 
-Drupal 8 to Drupal 7 backporting considerations
------------------------------------------------
-From a Drupal 8 perspective.
+From a Drupal 8 perspective:
+
 1.  Use the Libraries API module to depend on Underscore and Backbone.
 2.  Drupal 8's build of CKEditor already includes the sharedspace plugin, in
     Drupal 7 we must ask users to create a custom CKEditor build.
@@ -178,7 +181,8 @@ From a Drupal 8 perspective.
 17. Hooks and internal functions that can pass only `EntityInterface $entity`
     in Drupal 8 need to pass `string $entity_type, stdClass $entity` in Drupal 7.
 18. Only `WebTestBase`-based tests were backported from Drupal 8 to Drupal 7,
-    since `DrupalUnitTestBase` does not exist in Drupal 7. This does cover the majority of Edit's functionality though!
+    since `DrupalUnitTestBase` does not exist in Drupal 7. This does cover the
+    majority of Edit's functionality though!
 19. The Ajax command classes like `AppendCommand` etc. in Drupal 8 don't exist
     in Drupal 7: array structures are used instead.
     See https://drupal.org/node/1843212.
