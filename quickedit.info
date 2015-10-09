@@ -11,3 +11,10 @@ dependencies[] = field (>=7.22)
 dependencies[] = filter
 dependencies[] = libraries (>=2.x)
 dependencies[] = ctools
+
+; Information added by Drupal.org packaging script on 2015-08-05
+version = "7.x-1.2"
+core = "7.x"
+project = "quickedit"
+datestamp = "1438782173"
+
