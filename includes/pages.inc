@@ -376,6 +376,36 @@ function quickedit_ckeditor_get_untransformed_text($entity_type, $entity_id, $fi
   // Render the field in our custom display mode; retrieve the re-rendered
   // markup, this is what we're after.
   $field_output = field_view_field($entity_type, $entity, $field_name, 'quickedit-render-without-transformation-filters', $langcode);
+
+  // Different modules like media, media_ckeditor attach JS functionalties using
+  // hook_element_info_alter(). So, required CSSs and JSs will only be attached
+  // while the form field for correspondng entity field is rendered.
+  // Here we emulate that field rendering and collects the attached CSSs and JSs
+  // and deliver as Ajax response.
+  // Copied from quickedit_field_edit().
+  $subform_id = 'quickedit_field_edit_form';
+  if (_quickedit_is_extra_field($entity_type, $field_name)) {
+    $subform_id = quickedit_extra_field_info($entity_type, $field_name, 'quickedit subform id');
+  }
+  $form_state = array(
+    'entity_type' => $entity_type,
+    'entity_id' => $entity_id,
+    'entity' => $entity,
+    'field_name' => $field_name,
+    'langcode' => $langcode,
+    'view_mode' => $view_mode,
+    'no_redirect' => TRUE,
+    'bundle' => $bundle,
+    'subform_id' => $subform_id,
+    'build_info' => array(
+      'args' => array($entity, $field_name),
+    ),
+  );
+  // Create the form containing the field
+  $form = drupal_build_form('quickedit_field_form', $form_state);
+  // We do not take the rendered HTML output, we have no use with that.
+  $temp = drupal_render($form);
+
   $output = $field_output[0]['#markup'];
 
   $commands[] = array(

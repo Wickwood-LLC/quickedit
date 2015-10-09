@@ -160,12 +160,17 @@
       var textLoaderAjax = new Drupal.ajax(fieldID, this.$el, {
         url: Drupal.quickedit.util.buildUrl(fieldID, drupalSettings.quickedit.ckeditor.getUntransformedTextURL),
         event: 'quickedit-internal.quickedit-ckeditor',
-        submit: { nocssjs : true },
+        submit: { nocssjs : false },
         progress: { type : null } // No progress indicator.
       });
 
       // Work-around for https://drupal.org/node/2019481 in Drupal 7.
       textLoaderAjax.commands = {};
+      // The above work-around prevents the prototype implementations from being
+      // called, so we must alias any and all of the commands that might be called.
+      textLoaderAjax.commands.settings = Drupal.ajax.prototype.commands.settings;
+      textLoaderAjax.commands.insert = Drupal.ajax.prototype.commands.insert;
+      textLoaderAjax.commands.add_css = Drupal.ajax.prototype.commands.add_css;
       // Implement a scoped quickeditCKEditorGetUntransformedText AJAX command:
       // calls the callback.
       textLoaderAjax.commands.quickeditCKEditorGetUntransformedText = function (ajax, response, status) {
