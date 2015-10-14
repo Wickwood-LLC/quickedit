@@ -217,4 +217,57 @@
     };
   };
 
+  /**
+   * Find the largest area available between the 'fixed' positioned elements.
+   *
+   * That area can be taken to define the fecce where quickedit toolbar can move within.
+   *
+   * @return {Object}
+   *   Contain top, right, bottom, left values that can be used directly for a
+   *   'fixed' positioned element to take the 'empty' area left by other fixed
+   *   positioned elemnts.
+   */
+  Drupal.quickedit.util.getLargestEmptyArea = function() {
+    var sides = ['top', 'right', 'bottom', 'left'];
+    var space = {top: [window.innerHeight], right: [window.innerWidth], bottom: [window.innerHeight], left: [window.innerWidth]};
+    // Get all elements
+    $('*')
+      // and filter to get 'fixed' positioned elements
+      .filter(function(){ return $(this).css('position') === 'fixed'; })
+      // Find the largest side where more space is available, for each element.
+      .each(function(){
+        var sideSpaces = {};
+        var that = this;
+        _.each(sides, function(side){
+          sideSpaces[side] = parseInt($(that).css(side));
+        });
+        // Get bigger empty side.
+        var maxSide = _.invert(sideSpaces)[_.max(sideSpaces)];
+        space[maxSide].push(sideSpaces[maxSide]);
+      });
+
+      _.each(space, function(values, side){
+        // We need to consider minimum available space on each side.
+        space[side] = _.min(values);
+
+        switch(side) {
+          case 'top':
+          case 'bottom':
+            space[side] = window.innerHeight - space[side];
+            break;
+          case 'right':
+          case 'left':
+            space[side] = window.innerWidth - space[side];
+            break;
+        }
+      });
+    // Swap bottom with top and right with left.
+    var spaceCopy = _.clone(space);
+    space.top = spaceCopy.bottom;
+    space.right = spaceCopy.left;
+    space.bottom = spaceCopy.top;
+    space.left = spaceCopy.right;
+    return space;
+  };
+
 })(jQuery, Drupal, Drupal.settings);

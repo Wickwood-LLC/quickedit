@@ -68,7 +68,12 @@
         // The fence will define a area on the screen that the entity toolbar
         // will be position within.
         if ($body.children('#quickedit-toolbar-fence').length === 0) {
+          var space = Drupal.quickedit.util.getLargestEmptyArea();
           this.$fence = $(Drupal.theme('quickeditEntityToolbarFence'))
+            .css('top', space.top)
+            .css('right', space.right)
+            .css('bottom', space.bottom)
+            .css('left', space.left)
             // @todo: Figure out the Drupal 7 alternative for Drupal.displace()?
             //        See https://drupal.org/node/1956804.
             //.css(Drupal.displace())
