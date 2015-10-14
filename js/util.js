@@ -239,7 +239,25 @@
         var sideSpaces = {};
         var that = this;
         _.each(sides, function(side){
-          sideSpaces[side] = parseInt($(that).css(side));
+          var value = $(that).css(side);
+          // Chrome will return 'auto' and not the computed value for unspecified sides
+          // of fixed positioned element.
+          // We need to calucate space available by deducting element width or height
+          // from view port width or height respectively.
+          if (value === 'auto') {
+            switch(side) {
+              case 'top':
+              case 'bottom':
+                value = window.innerHeight - $(that).outerHeight();
+                break;
+              case 'left':
+              case 'right':
+                value = window.innerWidth - $(that).outerWidth();
+                break;
+            }
+          }
+          // Calculated value may have 'px' suffix. We just need integer value.
+          sideSpaces[side] = parseInt(value);
         });
         // Get bigger empty side.
         var maxSide = _.invert(sideSpaces)[_.max(sideSpaces)];
