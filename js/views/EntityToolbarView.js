@@ -68,7 +68,7 @@
         // The fence will define a area on the screen that the entity toolbar
         // will be position within.
         if ($body.children('#quickedit-toolbar-fence').length === 0) {
-          var space = Drupal.quickedit.util.getLargestEmptyArea();
+          var space = Drupal.quickedit.util.getLargestEmptyArea(this.$el.css('z-index'));
           this.$fence = $(Drupal.theme('quickeditEntityToolbarFence'))
             .css('top', space.top)
             .css('right', space.right)
