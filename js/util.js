@@ -222,18 +222,27 @@
    *
    * That area can be taken to define the fecce where quickedit toolbar can move within.
    *
+   * @param {Number} toolbarZIndex
+   *   z-index of the toolbar.
    * @return {Object}
    *   Contain top, right, bottom, left values that can be used directly for a
    *   'fixed' positioned element to take the 'empty' area left by other fixed
    *   positioned elemnts.
    */
-  Drupal.quickedit.util.getLargestEmptyArea = function() {
+  Drupal.quickedit.util.getLargestEmptyArea = function(toolbarZIndex) {
     var sides = ['top', 'right', 'bottom', 'left'];
     var space = {top: [window.innerHeight], right: [window.innerWidth], bottom: [window.innerHeight], left: [window.innerWidth]};
     // Get all elements
     $('*')
       // and filter to get 'fixed' positioned elements
-      .filter(function(){ return $(this).css('position') === 'fixed'; })
+      .filter(function(){
+        var $this = $(this);
+        // Select fixed positioned elements only.
+        // Avoid non-shown elements, they will lead to wrong calculations and
+        // they will not interfere as they are hidden.
+        // Only consider fixed elements that are top to the toolbar.
+        return $this.css('position') === 'fixed' && $this.css('display') !== 'none' && toolbarZIndex <= $this.css('z-index');
+      })
       // Find the largest side where more space is available, for each element.
       .each(function(){
         var sideSpaces = {};
