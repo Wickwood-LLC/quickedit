@@ -56,9 +56,9 @@ function quickedit_filter_info_alter(&$info) {
     // https://drupal.org/project/ckeditor_link
     'ckeditor_link_filter' => FILTER_TYPE_TRANSFORM_REVERSIBLE,
     // http://drupal.org/project/editor
-    'editor_image_align' => FILTER_TYPE_TRANSFORM_REVERSIBLE,
+    'editor_align' => FILTER_TYPE_TRANSFORM_REVERSIBLE,
     // http://drupal.org/project/editor
-    'editor_image_caption' => FILTER_TYPE_TRANSFORM_REVERSIBLE,
+    'editor_caption' => FILTER_TYPE_TRANSFORM_REVERSIBLE,
     // https://drupal.org/project/emptyparagraphkiller
     'emptyparagraphkiller' => FILTER_TYPE_HTML_RESTRICTOR,
     // https://drupal.org/project/entity_embed
