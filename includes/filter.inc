@@ -147,7 +147,7 @@ function check_markup2($text, $format_id = NULL, $langcode = '', $cache = FALSE,
   $cache_id = '';
   if ($cache) {
     $cache_id = $format->format . ':' . $langcode . ':' . hash('sha256', $text);
-    if ($cached = cache('filter')->get($cache_id)) {
+    if ($cached = cache_get($cache_id, 'cache_filter')) {
       return $cached->data;
     }
   }
@@ -189,7 +189,7 @@ function check_markup2($text, $format_id = NULL, $langcode = '', $cache = FALSE,
   // automatically flushed when the text format is updated.
   // @see filter_format_save()
   if ($cache) {
-    cache('filter')->set($cache_id, $text);
+    cache_set($cache_id, $text, 'cache_filter');
   }
 
   return $text;
