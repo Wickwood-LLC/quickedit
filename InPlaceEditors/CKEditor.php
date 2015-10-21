@@ -60,11 +60,6 @@ class CKEditor implements QuickEditInPlaceEditorInterface{
     // @todo Consider moving this to the attachments callback.
     module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
     if ($settings = ckeditor_profiles_compile($format_id)) {
-      // Clean up a few settings.
-      foreach (array('customConfig', 'show_toggle', 'ss', 'contentsCss', 'stylesCombo_stylesSet') as $config_item) {
-        unset($settings[$config_item]);
-      }
-
       // CKEditor.module stores the toolbar configuration as a non-standard JSON
       // serialization. In case they one day fix that, we check if it is indeed
       // still serialized.
