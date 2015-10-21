@@ -163,7 +163,7 @@ function check_markup2($text, $format_id = NULL, $langcode = '', $cache = FALSE,
   // Give filters the chance to escape HTML-like data such as code or formulas.
   foreach ($filters as $name => $filter) {
     // If necessary, skip filters of a certain type.
-    if (in_array($filter_info[$name]['type'], $filter_types_to_skip)) {
+    if (isset($filter_info[$name]['type']) && in_array($filter_info[$name]['type'], $filter_types_to_skip)) {
       continue;
     }
     if (!empty($filter->status) && isset($filter_info[$name]['prepare callback'])) {
@@ -175,7 +175,7 @@ function check_markup2($text, $format_id = NULL, $langcode = '', $cache = FALSE,
   // Perform filtering.
   foreach ($filters as $name => $filter) {
     // If necessary, skip filters of a certain type.
-    if (in_array($filter_info[$name]['type'], $filter_types_to_skip)) {
+    if (isset($filter_info[$name]['type']) && in_array($filter_info[$name]['type'], $filter_types_to_skip)) {
       continue;
     }
     if (!empty($filter->status) && isset($filter_info[$name]['process callback'])) {
