@@ -138,7 +138,7 @@ function panelizer_quickedit_render_field($entity_type, $entity, $field_name, $v
     // Immediately return the rendered title pseudo-field.
     $quickedit_id = "$entity_type/$entity_id/title/$langcode/$view_mode_id";
     $prefix = '<' . $title_element . ' data-quickedit-field-id="' . $quickedit_id .'">';
-    $suffix . '</' . $title_element . '>';
+    $suffix = '</' . $title_element . '>';
     if (isset($entity_url)) {
       $markup = $prefix . '<a href="' . $entity_url . '">' . $entity->title . '</a>' . $suffix;
     }
