@@ -397,7 +397,9 @@
       }
       else if (this.model.get('activeField') === fieldModel && to === 'candidate') {
         // Discarded if it transitions from a changed state to 'candidate'.
-        if (from === 'changed' || from === 'invalid') {
+        // Reverting even when it was just active, it is to handle the issue of
+        // media tags which get displayed without rendered.
+        if (from === 'changed' || from === 'invalid' || from === 'active') {
           fieldModel.editorView.revert();
         }
         this.model.set('activeField', null);
