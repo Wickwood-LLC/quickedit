@@ -419,6 +419,7 @@
     // The above work-around prevents the prototype implementations from being
     // called, so we must alias any and all of the commands that might be called.
     loadEditorsAjax.commands.settings = Drupal.ajax.prototype.commands.settings;
+    loadEditorsAjax.commands.add_css = Drupal.ajax.prototype.commands.add_css;
     // Implement a scoped insert AJAX command: calls the callback after all AJAX
     // command functions have been executed (hence the deferred calling).
     var realInsert = Drupal.ajax.prototype.commands.insert;

@@ -96,6 +96,9 @@
         case 'active':
           var textElement = this.$textElement.get(0);
           var toolbarView = fieldModel.toolbarView;
+          var metadata = Drupal.quickedit.metadata.get(this.fieldModel.get('fieldID'), 'custom');
+          // Set text editor of currently active editor.
+          Drupal.settings.quickedit.format = metadata.format;
           this._ckeditor_attachInlineEditor(
             textElement,
             this.ckeditorSettings,

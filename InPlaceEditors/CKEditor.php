@@ -108,7 +108,7 @@ class CKEditor implements QuickEditInPlaceEditorInterface{
    * @see Drupal 8's \Drupal\editor\Plugin\quickedit\editor\Editor::getAttachments().
    */
   public function getAttachments() {
-    return array(
+    $attachments = array(
       'library' => array(
         array('quickedit', 'quickedit.inPlaceEditor.ckeditor'),
       ),
@@ -125,6 +125,41 @@ class CKEditor implements QuickEditInPlaceEditorInterface{
         ),
       ),
     );
+    if (module_exists('linkit')) {
+      global $user;
+      $all_formats = array_keys(filter_formats($user));
+
+      $profiles_formats = array();
+
+      // First we need to figure out which formats that the current user can access have active Linkit profiles for them.
+      foreach ($all_formats as $format) {
+        // Load the first profile that is assigned to this text format.
+        $profile = linkit_profile_load_by_format($format);
+
+        module_load_include('inc', 'ckeditor', 'includes/ckeditor.lib');
+        $ckeditor_profile = ckeditor_get_profile($format);
+        // Need to consider only if linkit is enabled for the CKeditor profile
+        // for that input format.
+        if ($profile && !empty($ckeditor_profile) && !empty($ckeditor_profile->settings['loadPlugins']['linkit'])) {
+          $profiles_formats[$format] = array('profile' => $profile->name);
+        }
+      }
+
+      if (!empty($profiles_formats)) {
+
+        $field_js = array(
+          'data' => array(
+            'linkit' => array(
+              'formats' => $profiles_formats,
+            ),
+          ),
+          'type' => 'setting',
+        );
+        $attachments['library'][] = array('linkit', 'ckeditor');
+        $attachments['js'][] = $field_js;
+      }
+    }
+    return $attachments;
   }
 
 }
