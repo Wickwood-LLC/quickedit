@@ -21,9 +21,10 @@
       var editorModel = this.model;
       var fieldModel = this.fieldModel;
 
-      // Store the original value of this field. Necessary for reverting changes.
+      // Store the original value of this field. Necessary for reverting
+      // changes.
       var $textElement;
-      var $fieldItems = this.$el.find('.field-item');
+      var $fieldItems = this.$el.find('.quickedit-field');
       if ($fieldItems.length) {
         $textElement = this.$textElement = $fieldItems.eq(0);
       }
