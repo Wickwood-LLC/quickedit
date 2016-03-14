@@ -123,6 +123,8 @@ function quickedit_permission() {
  * in-place editing' permission.
  */
 function quickedit_page_build(&$page) {
+  // If the user lacks the appropriate permission, return early to avoid
+  // processing.
   if (!user_access('access in-place editing')) {
     return;
   }
@@ -414,6 +416,12 @@ function _quickedit_is_extra_field($entity_type, $field_name) {
  * This is the main entry point for marking up a field as in-place editable.
  */
 function quickedit_preprocess_field(&$variables) {
+  // If the user lacks the appropriate permission, return early to avoid
+  // processing.
+  if (!user_access('access in-place editing')) {
+    return;
+  }
+
   $element = $variables['element'];
 
   // Quick Edit module only supports view modes, not dynamically defined "display
@@ -485,6 +493,12 @@ function quickedit_preprocess_field(&$variables) {
  * Wraps title field when viewing a node page to make it in-place editable.
  */
 function quickedit_preprocess_page(&$variables) {
+  // If the user lacks the appropriate permission, return early to avoid
+  // processing.
+  if (!user_access('access in-place editing')) {
+    return;
+  }
+
   // If we don't have a node object to work with, return early to avoid
   // processing.
   if (empty($variables['node'])) {
@@ -510,6 +524,12 @@ function quickedit_preprocess_page(&$variables) {
  * editability.
  */
 function quickedit_preprocess_node(&$variables) {
+  // If the user lacks the appropriate permission, return early to avoid
+  // processing.
+  if (!user_access('access in-place editing')) {
+    return;
+  }
+
   $entity_type = $variables['elements']['#entity_type'];
   $entity = $variables['elements']['#node'];
   $view_mode = $variables['elements']['#view_mode'];
@@ -555,6 +575,12 @@ function quickedit_node_view_alter(&$build) {
  * data-quickedit-field-id properly.
  */
 function quickedit_preprocess_panels_pane(&$variables) {
+  // If the user lacks the appropriate permission, return early to avoid
+  // processing.
+  if (!user_access('access in-place editing')) {
+    return;
+  }
+
   // If we don't have a node object to work with, return early to avoid
   // processing.
   // Note: This convoluted check is required because the expression

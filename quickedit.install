@@ -101,6 +101,27 @@ function quickedit_requirements($phase) {
     }
 
     // Best-effort check that the theme is compatible.
+    $requirements['quickedit_theme'] = array(
+      'title' => t('Quick Edit: theme compatibility'),
+      'value' => t('The theme appears compatible'),
+      'severity' => REQUIREMENT_OK,
+    );
+
+    // Quick Edit checks theme compatibility by visiting a node as an anonymous
+    // user and looking for the required HTML markers. However, this requires
+    // administrators to temporarily give anonymous users permission to quick
+    // edit.
+    if (!user_access('access in-place editing', user_load(0))) {
+      // Redirect the user back to the status page after modifying permissions.
+      $destination = array('destination' => 'admin/reports/status');
+      $requirements['quickedit_theme']['value'] = t('Permission change required to determine compatibility.');
+      $requirements['quickedit_theme']['description'] = t('In order to determine compatibility, you must temporarily grant anonymous users the !permission-name permission.', array(
+        '!permission-name' => l(t('Access in-place editing'), 'admin/people/permissions', array('fragment' => 'module-quickedit', 'query' => $destination)),
+      ));
+      $requirements['quickedit_theme']['severity'] = REQUIREMENT_INFO;
+      return $requirements;
+    }
+
     $query = new EntityFieldQuery();
     $query
       ->entityCondition('entity_type', 'node')
@@ -108,12 +129,6 @@ function quickedit_requirements($phase) {
       ->range(0, 1);
     $result = $query->execute();
     if (isset($result['node'])) {
-      $requirements['quickedit_theme'] = array(
-        'title' => t('Quick Edit: theme compatibility'),
-        'value' => t('The theme appears compatible'),
-        'severity' => REQUIREMENT_OK,
-      );
-
       // Request the first published node's HTML.
       $node_ids = array_keys($result['node']);
       $node_id = $node_ids[0];
@@ -121,7 +136,7 @@ function quickedit_requirements($phase) {
 
       // Prevent false negatives for the theme compatibility check.
       if (isset($response->error) && $response->error) {
-        $requirements['quickedit_theme']['value'] = '<strong>' . t('Could not determine compatibility.') . '</strong>';
+        $requirements['quickedit_theme']['value'] = '<strong>' . t('Unable to access content to determine compatibility.') . '</strong>';
         $requirements['quickedit_theme']['description'] = t('When a site does not allow anonymous users to access content, requires HTTP authentication or something similar, Quick Edit module is unable to automatically determine compatibility');
         return $requirements;
       }

@@ -83,9 +83,10 @@ class QuickEditLoadingTest extends DrupalWebTestCase {
     $this->assertFalse(isset($settings['ajaxPageState']['js'][$module_path . '/js/quickedit.js']), 'Quick Edit library not loaded.');
     $this->assertFalse(isset($settings['ajaxPageState']['js'][$module_path . '/quickedit/js/editors/formEditor.js']), "'form' in-place editor not loaded.");
 
-    // HTML annotation must always exist (to not break the render cache).
-    $this->assertRaw('data-quickedit-entity-id="node/1"');
-    $this->assertRaw('data-quickedit-field-id="node/1/body/und/full"');
+    // HTML annotation does not exist for users without permission to in-place
+    // edit.
+    $this->assertNoRaw('data-quickedit-entity-id="node/1"');
+    $this->assertNoRaw('data-quickedit-field-id="node/1/body/und/full"');
 
     // Retrieving the metadata should result in an empty 403 response.
     $post = array('fields[0]' => 'node/1/body/und/full');
