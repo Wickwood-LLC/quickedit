@@ -15,7 +15,8 @@
  * @see quickedit_preprocess_node()
  */
 function quickedit_ctools_render_alter(&$info, &$page, &$context) {
-  if ($context['task']['task type'] == 'page') {
+  // Ignore task handlers that do not set any content, such as HTTP responses.
+  if (($context['task']['task type'] == 'page') && isset($info['content'])) {
     foreach ($context['contexts'] as $page_context) {
       if ($page_context->type[1] === 'entity') {
         $entity_id = $context['args'][0];
