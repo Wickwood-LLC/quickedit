@@ -1,7 +1,8 @@
 name = Quick Edit
-description = In-place content editing.
+description = In-place content editing. Contains custom patches for WWM.
 package = Spark
 core = 7.x
+version = "7.x-1.5"
 
 dependencies[] = contextual
 dependencies[] = entity
