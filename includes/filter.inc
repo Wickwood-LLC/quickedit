@@ -100,6 +100,8 @@ function quickedit_filter_info_alter(&$info) {
     'typogrify' => FILTER_TYPE_TRANSFORM_IRREVERSIBLE,
     // http://drupal.org/project/wysiwyg_filter
     'wysiwyg' => FILTER_TYPE_HTML_RESTRICTOR,
+    // http://drupal.org/project/amazon
+    'amazon' => FILTER_TYPE_TRANSFORM_IRREVERSIBLE,
   );
 
   foreach ($contrib_filter_type as $filter => $type) {
