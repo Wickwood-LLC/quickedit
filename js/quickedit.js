@@ -267,6 +267,10 @@
         .find(entityElementSelector)
         .addBack(entityElementSelector);
     }
+    // Early exit if there is editable entity found.
+    if (entityElement.length === 0) {
+      return;
+    }
     var entityInstanceID = entityElement
       .get(0)
       .getAttribute('data-quickedit-entity-instance-id');
